@@ -1,17 +1,15 @@
 import { NextResponse } from 'next/server';
-import { getSupabase } from '@/lib/supabase';
+import { DELIVERY_PRICES } from '@/lib/prices';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
-  try {
-    const sb = getSupabase();
-    const { data } = await sb
-      .from('delivery_prices')
-      .select('wilaya_code, office_price, home_price, desks')
-      .order('wilaya_code');
-    return NextResponse.json(data ?? []);
-  } catch {
-    return NextResponse.json([]);
-  }
+  return NextResponse.json(
+    DELIVERY_PRICES.map((p) => ({
+      wilaya_code: p.code,
+      office_price: p.desk,
+      home_price: p.home,
+      desks: p.desks,
+    })),
+  );
 }

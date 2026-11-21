@@ -4,6 +4,7 @@ import { getSettings } from '@/lib/settings';
 import { normalizePhone, isValidAlgerianPhone } from '@/lib/format';
 import { getWilaya } from '@/lib/geo';
 import { sendTelegram } from '@/lib/telegram';
+import { deliveryFee as getDeliveryFee } from '@/lib/prices';
 
 export const dynamic = 'force-dynamic';
 
@@ -98,19 +99,8 @@ export async function POST(req: Request) {
   const unitPrice = product.price;
   const subtotal = unitPrice * quantity;
 
-  // Delivery fee (World Express) per wilaya + delivery type.
-  let deliveryFee = 0;
-  if (settings.delivery_fee_mode === 'per_wilaya') {
-    const { data: priceRow } = await sb
-      .from('delivery_prices')
-      .select('office_price,home_price')
-      .eq('wilaya_code', wilayaCode)
-      .maybeSingle();
-    if (priceRow) {
-      deliveryFee = deliveryType === 'office' ? Number(priceRow.office_price ?? 0) : Number(priceRow.home_price ?? 0);
-    }
-  }
-
+  // Delivery fee (World Express) per wilaya + delivery type (static dataset).
+  const deliveryFee = getDeliveryFee(wilayaCode, deliveryType);
   const total = Math.max(0, Math.round(subtotal * (1 - discountPercent / 100))) + deliveryFee;
 
   // Resolve names
@@ -138,7 +128,6 @@ export async function POST(req: Request) {
     unit_price: unitPrice,
     quantity,
     discount_percent: discountPercent,
-    delivery_fee: deliveryFee,
     total,
     first_name: firstName,
     last_name: lastName,

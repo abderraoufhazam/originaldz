@@ -47,10 +47,6 @@ export default async function OrderDetailPage({ params }: { params: { id: string
               <dd className="font-semibold text-slate-800">{fmtDZD(o.unit_price)}</dd>
             </div>
             <div>
-              <dt className="text-slate-500">تكلفة التوصيل</dt>
-              <dd className="font-semibold text-slate-800">{fmtDZD(o.delivery_fee ?? 0)}</dd>
-            </div>
-            <div>
               <dt className="text-slate-500">المجموع</dt>
               <dd className="text-lg font-extrabold text-brand-800">{fmtDZD(o.total)}</dd>
             </div>

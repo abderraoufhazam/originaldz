@@ -93,7 +93,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
               <Gallery images={images} alt={title} />
               <div className="mt-4 grid grid-cols-3 gap-2">
                 <TrustBadge icon="💵">{t(dict, 'common.cod')}</TrustBadge>
-                <TrustBadge icon="🚚">{t(dict, 'form.deliveryFree')}</TrustBadge>
+                <TrustBadge icon="🚚">World Express</TrustBadge>
                 <TrustBadge icon="↩️">{t(dict, 'form.weCall')}</TrustBadge>
               </div>
             </div>

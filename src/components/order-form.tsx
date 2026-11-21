@@ -179,7 +179,7 @@ export default function OrderForm({ product, wilayas, locale }: Props) {
         <span>✓</span>
         <span>{t(dict, 'common.cod')}</span>
         <span className="text-slate-300">•</span>
-        <span>{t(dict, 'form.deliveryFree')}</span>
+        <span>🚚 World Express</span>
       </div>
 
       <div className="mt-5 space-y-4">
