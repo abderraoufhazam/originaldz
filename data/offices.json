@@ -1,0 +1,16 @@
+[
+  { "wilaya_code": 16, "name_ar": "الجزائر العاصمة", "name_fr": "Alger Centre", "address": "64 Rue Larbi Ben M'hidi, Alger Centre", "phone": "0663 65 16 16" },
+  { "wilaya_code": 9, "name_ar": "البليدة", "name_fr": "Blida", "address": "شارع الإخوة زدري، طريق بني تامو", "phone": "" },
+  { "wilaya_code": 6, "name_ar": "بجاية", "name_fr": "Béjaïa", "address": "Cité Somacob, Béjaïa", "phone": "0660 63 93 87" },
+  { "wilaya_code": 13, "name_ar": "تلمسان", "name_fr": "Tlemcen", "address": "Tlemcen", "phone": "0660 63 49 09" },
+  { "wilaya_code": 19, "name_ar": "سطيف", "name_fr": "Sétif", "address": "حي أولاد براهم، مقابل مسجد 1014 عبيدة ابن الجراح", "phone": "0660 63 17 83" },
+  { "wilaya_code": 3, "name_ar": "الأغواط", "name_fr": "Laghouat", "address": "Cité Mamourah, en face la Maison de la Culture", "phone": "" },
+  { "wilaya_code": 17, "name_ar": "الجلفة", "name_fr": "Djelfa", "address": "وسط مدينة الجلفة", "phone": "" },
+  { "wilaya_code": 17, "name_ar": "الجلفة - عين وسارة", "name_fr": "Djelfa - Aïn Oussera", "address": "مقابل بنك السلام، طريق الشلالة", "phone": "0661 71 78 69" },
+  { "wilaya_code": 28, "name_ar": "المسيلة", "name_fr": "M'Sila", "address": "M'Sila", "phone": "0660 63 49 74" },
+  { "wilaya_code": 48, "name_ar": "غليزان - وادي ارهيو", "name_fr": "Relizane - Oued Rhiou", "address": "Rue Khelifa Moussaoui, Oued Rhiou", "phone": "0662 54 25 89" },
+  { "wilaya_code": 42, "name_ar": "تيبازة - القليعة", "name_fr": "Tipaza - Koléa", "address": "01 Rue d'Alger, Koléa", "phone": "" },
+  { "wilaya_code": 2, "name_ar": "الشلف - بوقادير", "name_fr": "Chlef - Boukadir", "address": "بوقادير", "phone": "" },
+  { "wilaya_code": 45, "name_ar": "النعامة - عين الصفراء", "name_fr": "Naâma - Aïn Sefra", "address": "عين الصفراء", "phone": "" },
+  { "wilaya_code": 34, "name_ar": "برج بوعريريج - رأس الوادي", "name_fr": "Bordj Bou Arréridj - Ras El Oued", "address": "رأس الوادي", "phone": "" }
+]
