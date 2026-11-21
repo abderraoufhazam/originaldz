@@ -1,9 +1,8 @@
 import type { Locale } from './types';
 
 export function formatPrice(dzd: number, locale: Locale): string {
-  const groups = String(Math.round(dzd)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
   const unit = locale === 'ar' ? 'دج' : locale === 'fr' ? 'DA' : 'DZD';
-  return `${groups} ${unit}`;
+  return `${Math.round(dzd)} ${unit}`;
 }
 
 /** Normalize an Algerian mobile number: strip non-digits, keep leading 0. */

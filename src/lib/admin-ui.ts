@@ -27,5 +27,5 @@ export const RISK_COLORS: Record<string, string> = {
 };
 
 export function fmtDZD(n: number): string {
-  return `${String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} دج`;
+  return `${n} دج`;
 }
