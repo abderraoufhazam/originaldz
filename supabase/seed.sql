@@ -6,16 +6,20 @@ insert into storage.buckets (id, name, public)
 values ('products', 'products', true)
 on conflict (id) do nothing;
 
-create policy if not exists "products public read"
+drop policy if exists "products public read" on storage.objects;
+create policy "products public read"
 on storage.objects for select
 using (bucket_id = 'products');
 
-create policy if not exists "products authenticated insert"
+drop policy if exists "products authenticated insert" on storage.objects;
+create policy "products authenticated insert"
 on storage.objects for insert
 with check (bucket_id = 'products');
 
 -- World Express offices — editable seed (complete the list from the admin panel).
-insert into offices (wilaya_code, name_ar, name_fr, address, phone) values
+-- Run this section once. Re-running it would duplicate rows.
+insert into offices (wilaya_code, name_ar, name_fr, address, phone)
+select * from (values
   (16, 'الجزائر العاصمة', 'Alger Centre', '64 Rue Larbi Ben M''hidi, Alger Centre', '0663651616'),
   (9,  'البليدة', 'Blida', 'شارع الإخوة زدري، طريق بني تامو', ''),
   (6,  'بجاية', 'Béjaïa', 'Cité Somacob, Béjaïa', '0660639387'),
@@ -30,4 +34,7 @@ insert into offices (wilaya_code, name_ar, name_fr, address, phone) values
   (2,  'الشلف - بوقادير', 'Chlef - Boukadir', 'بوقادير', ''),
   (45, 'النعامة - عين الصفراء', 'Naâma - Aïn Sefra', 'عين الصفراء', ''),
   (34, 'برج بوعريريج - رأس الوادي', 'Bordj Bou Arréridj - Ras El Oued', 'رأس الوادي', '')
-on conflict do nothing;
+) as v(wilaya_code, name_ar, name_fr, address, phone)
+where not exists (
+  select 1 from offices o where o.wilaya_code = v.wilaya_code and o.name_fr = v.name_fr
+);
