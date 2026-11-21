@@ -38,6 +38,18 @@ export default function OrderForm({ product, wilayas, locale }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [result, setResult] = useState<Result | null>(null);
+  const [prices, setPrices] = useState<Record<number, { office: number | null; home: number | null }>>({});
+
+  useEffect(() => {
+    fetch('/api/prices')
+      .then((r) => r.json())
+      .then((list: { wilaya_code: number; office_price: number | null; home_price: number | null }[]) => {
+        const map: Record<number, { office: number | null; home: number | null }> = {};
+        for (const p of list ?? []) map[p.wilaya_code] = { office: p.office_price, home: p.home_price };
+        setPrices(map);
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     const saved = localStorage.getItem('odz_phone');
@@ -73,6 +85,12 @@ export default function OrderForm({ product, wilayas, locale }: Props) {
   const bundlePercent = bundleActive ? product.bundle_discount : 0;
   const subtotal = product.price * qty;
   const discounted = bundlePercent ? Math.round(subtotal * (1 - bundlePercent / 100)) : subtotal;
+
+  const priceInfo = wilaya ? prices[wilaya] : undefined;
+  const deliveryFee =
+    deliveryType === 'office' ? Number(priceInfo?.office ?? 0) : Number(priceInfo?.home ?? 0);
+  const hasDeliveryFee = deliveryFee > 0;
+  const total = discounted + deliveryFee;
 
   const noOffice = deliveryType === 'office' && !loadingGeo && wilaya !== '' && offices.length === 0;
 
@@ -312,24 +330,28 @@ export default function OrderForm({ product, wilayas, locale }: Props) {
         ) : null}
 
         {/* Total */}
-        <div className="rounded-xl bg-slate-50 p-4 text-sm">
+        <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm">
           <div className="flex justify-between text-slate-600">
-            <span>{t(dict, 'product.quantity')}</span>
-            <span>{qty}</span>
-          </div>
-          <div className="mt-1 flex justify-between text-slate-600">
-            <span>{t(dict, 'form.total')}</span>
+            <span>
+              {t(dict, 'order.subtotal')} ({t(dict, 'form.quantityOf', { n: qty })})
+            </span>
             <span>{formatPrice(subtotal, locale)}</span>
           </div>
           {bundlePercent ? (
             <div className="mt-1 flex justify-between font-semibold text-brand-700">
-              <span>{t(dict, 'product.bundleNote', { p: bundlePercent, n: product.bundle_min })}</span>
-              <span>-{bundlePercent}%</span>
+              <span>{t(dict, 'order.discount')} (−{bundlePercent}%)</span>
+              <span>−{formatPrice(subtotal - discounted, locale)}</span>
             </div>
           ) : null}
+          <div className="mt-1 flex justify-between text-slate-600">
+            <span>{t(dict, 'order.deliveryFee')}</span>
+            <span className={hasDeliveryFee ? 'font-semibold text-slate-900' : 'font-semibold text-brand-700'}>
+              {hasDeliveryFee ? formatPrice(deliveryFee, locale) : t(dict, 'order.freeDelivery')}
+            </span>
+          </div>
           <div className="mt-2 flex justify-between border-t border-slate-200 pt-2 text-base font-extrabold text-slate-900">
-            <span>{t(dict, 'form.total')}</span>
-            <span>{formatPrice(discounted, locale)}</span>
+            <span>{t(dict, 'order.total')}</span>
+            <span>{formatPrice(total, locale)}</span>
           </div>
         </div>
 

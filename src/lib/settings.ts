@@ -12,7 +12,7 @@ export const DEFAULT_SETTINGS: Settings = {
   tiktok_pixel: '',
   welcome_discount: 10,
   loyalty_discount: 5,
-  delivery_fee_mode: 'free',
+  delivery_fee_mode: 'per_wilaya',
 };
 
 let cache: { settings: Settings; at: number } | null = null;

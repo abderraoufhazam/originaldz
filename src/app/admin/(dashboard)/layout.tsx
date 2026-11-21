@@ -18,7 +18,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <header className="sticky top-0 z-40 border-b border-slate-200 bg-white">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
           <Link href="/admin/orders" className="flex items-center gap-2">
-            <img src="/logo.jpg" alt="originaldz" className="h-9 w-auto object-contain" />
+            <img src="/logo.png" alt="originaldz" className="h-9 w-auto object-contain" />
             <span className="font-extrabold text-slate-900">الإدارة</span>
           </Link>
           <div className="flex items-center gap-3">

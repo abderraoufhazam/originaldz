@@ -27,7 +27,8 @@ export default async function SiteHeader({ locale }: { locale: Locale }) {
     <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/90 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4">
         <Link href="/" className="flex items-center gap-2">
-          <img src="/logo.jpg" alt={storeName} className="h-10 w-auto object-contain" />
+          <img src="/logo.png" alt={storeName} className="h-9 w-auto object-contain" />
+          <span className="text-lg font-extrabold text-brand-800">{storeName}</span>
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex">

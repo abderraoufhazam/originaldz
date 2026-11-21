@@ -97,7 +97,21 @@ export async function POST(req: Request) {
 
   const unitPrice = product.price;
   const subtotal = unitPrice * quantity;
-  const total = Math.max(0, Math.round(subtotal * (1 - discountPercent / 100)));
+
+  // Delivery fee (World Express) per wilaya + delivery type.
+  let deliveryFee = 0;
+  if (settings.delivery_fee_mode === 'per_wilaya') {
+    const { data: priceRow } = await sb
+      .from('delivery_prices')
+      .select('office_price,home_price')
+      .eq('wilaya_code', wilayaCode)
+      .maybeSingle();
+    if (priceRow) {
+      deliveryFee = deliveryType === 'office' ? Number(priceRow.office_price ?? 0) : Number(priceRow.home_price ?? 0);
+    }
+  }
+
+  const total = Math.max(0, Math.round(subtotal * (1 - discountPercent / 100))) + deliveryFee;
 
   // Resolve names
   const wilaya = getWilaya(wilayaCode);
@@ -124,6 +138,7 @@ export async function POST(req: Request) {
     unit_price: unitPrice,
     quantity,
     discount_percent: discountPercent,
+    delivery_fee: deliveryFee,
     total,
     first_name: firstName,
     last_name: lastName,

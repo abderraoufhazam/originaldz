@@ -83,6 +83,12 @@ export const dictionaries: Record<Locale, Dict> = {
     'catalog.title': 'المنتجات',
     'catalog.empty': 'لا توجد منتجات في هذا القسم.',
     'catalog.search': 'ابحث عن منتج…',
+
+    'order.subtotal': 'سعر المنتج',
+    'order.deliveryFee': 'تكلفة التوصيل',
+    'order.freeDelivery': 'مجاني',
+    'order.discount': 'الخصم',
+    'order.total': 'المجموع الكلي',
   },
 
   en: {
@@ -165,6 +171,12 @@ export const dictionaries: Record<Locale, Dict> = {
     'catalog.title': 'Products',
     'catalog.empty': 'No products in this category.',
     'catalog.search': 'Search for a product…',
+
+    'order.subtotal': 'Subtotal',
+    'order.deliveryFee': 'Delivery fee',
+    'order.freeDelivery': 'Free',
+    'order.discount': 'Discount',
+    'order.total': 'Total',
   },
 
   fr: {
@@ -247,6 +259,12 @@ export const dictionaries: Record<Locale, Dict> = {
     'catalog.title': 'Produits',
     'catalog.empty': 'Aucun produit dans cette catégorie.',
     'catalog.search': 'Rechercher un produit…',
+
+    'order.subtotal': 'Sous-total',
+    'order.deliveryFee': 'Frais de livraison',
+    'order.freeDelivery': 'Gratuit',
+    'order.discount': 'Remise',
+    'order.total': 'Total',
   },
 };
 

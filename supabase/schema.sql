@@ -40,6 +40,7 @@ create table if not exists orders (
   unit_price integer not null default 0,
   quantity integer not null default 1,
   discount_percent integer not null default 0,
+  delivery_fee integer not null default 0,
   total integer not null default 0,
   first_name text not null,
   last_name text not null,
@@ -116,6 +117,19 @@ create table if not exists settings (
 );
 
 -- ---------------------------------------------------------------------------
+-- World Express delivery prices (desk / home per wilaya)
+-- ---------------------------------------------------------------------------
+create table if not exists delivery_prices (
+  wilaya_code integer primary key,
+  office_price integer,
+  home_price integer,
+  desks integer not null default 0
+);
+
+-- Column added in a later release for existing deployments.
+alter table orders add column if not exists delivery_fee integer not null default 0;
+
+-- ---------------------------------------------------------------------------
 -- Realtime is not required for this app; the server uses the service role key.
 -- ---------------------------------------------------------------------------
 
@@ -131,7 +145,7 @@ insert into settings (key, value) values
   ('tiktok_pixel', '""'::jsonb),
   ('welcome_discount', '10'::jsonb),
   ('loyalty_discount', '5'::jsonb),
-  ('delivery_fee_mode', '"free"'::jsonb)
+  ('delivery_fee_mode', '"per_wilaya"'::jsonb)
 on conflict (key) do nothing;
 
 -- ---------------------------------------------------------------------------

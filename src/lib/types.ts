@@ -51,6 +51,13 @@ export type OrderStatus =
   | 'delivered'
   | 'cancelled';
 
+export interface DeliveryPrice {
+  wilaya_code: number;
+  office_price: number | null;
+  home_price: number | null;
+  desks: number;
+}
+
 export interface Order {
   id: string;
   order_number: string;
@@ -59,6 +66,7 @@ export interface Order {
   unit_price: number;
   quantity: number;
   discount_percent: number;
+  delivery_fee: number;
   total: number;
   first_name: string;
   last_name: string;
