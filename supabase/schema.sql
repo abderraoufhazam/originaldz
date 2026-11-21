@@ -133,3 +133,11 @@ insert into settings (key, value) values
   ('loyalty_discount', '5'::jsonb),
   ('delivery_fee_mode', '"free"'::jsonb)
 on conflict (key) do nothing;
+
+-- ---------------------------------------------------------------------------
+-- Grants for the API roles (tables created by hand need explicit grants).
+-- ---------------------------------------------------------------------------
+grant all on all tables in schema public to anon, authenticated, service_role;
+grant all on all sequences in schema public to anon, authenticated, service_role;
+alter default privileges in schema public grant all on tables to anon, authenticated, service_role;
+alter default privileges in schema public grant all on sequences to anon, authenticated, service_role;
