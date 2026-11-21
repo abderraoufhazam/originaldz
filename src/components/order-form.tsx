@@ -92,6 +92,15 @@ export default function OrderForm({ product, wilayas, locale }: Props) {
   const hasDeliveryFee = deliveryFee > 0;
   const total = discounted + deliveryFee;
 
+  // A wilaya with no World Express office (office price is null) is home-delivery only.
+  const officeAvailable = !wilaya || !priceInfo || priceInfo.office != null;
+
+  useEffect(() => {
+    if (wilaya && priceInfo && priceInfo.office == null) {
+      setDeliveryType('home');
+    }
+  }, [wilaya, priceInfo]);
+
   const noOffice = deliveryType === 'office' && !loadingGeo && wilaya !== '' && offices.length === 0;
 
   function submit() {
@@ -250,13 +259,21 @@ export default function OrderForm({ product, wilayas, locale }: Props) {
             <button
               type="button"
               onClick={() => setDeliveryType('office')}
+              disabled={!officeAvailable}
               className={`rounded-xl border p-3 text-sm font-semibold ${
-                deliveryType === 'office' ? 'border-brand-600 bg-brand-50 text-brand-800' : 'border-slate-300 text-slate-700'
-              }`}
+                deliveryType === 'office'
+                  ? 'border-brand-600 bg-brand-50 text-brand-800'
+                  : 'border-slate-300 text-slate-700'
+              } ${!officeAvailable ? 'cursor-not-allowed opacity-40' : ''}`}
             >
               📍 {t(dict, 'form.office')}
             </button>
           </div>
+          {!officeAvailable && wilaya ? (
+            <p className="mt-2 rounded-xl bg-amber-50 p-3 text-sm font-semibold text-amber-700">
+              📦 {t(dict, 'form.homeOnly')}
+            </p>
+          ) : null}
         </div>
 
         {/* Wilaya */}

@@ -89,6 +89,7 @@ export const dictionaries: Record<Locale, Dict> = {
     'order.freeDelivery': 'مجاني',
     'order.discount': 'الخصم',
     'order.total': 'المجموع الكلي',
+    'form.homeOnly': 'التوصيل للمنزل فقط',
   },
 
   en: {
@@ -177,6 +178,7 @@ export const dictionaries: Record<Locale, Dict> = {
     'order.freeDelivery': 'Free',
     'order.discount': 'Discount',
     'order.total': 'Total',
+    'form.homeOnly': 'Home delivery only',
   },
 
   fr: {
@@ -265,6 +267,7 @@ export const dictionaries: Record<Locale, Dict> = {
     'order.freeDelivery': 'Gratuit',
     'order.discount': 'Remise',
     'order.total': 'Total',
+    'form.homeOnly': 'Livraison à domicile uniquement',
   },
 };
 
