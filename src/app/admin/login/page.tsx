@@ -31,9 +31,7 @@ export default function AdminLoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-slate-100 px-4">
       <form onSubmit={submit} className="w-full max-w-sm rounded-2xl bg-white p-8 shadow-lg">
         <div className="text-center">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-brand-800 text-xl font-extrabold text-white">
-            O
-          </div>
+          <img src="/logo.jpg" alt="originaldz" className="mx-auto h-16 w-auto object-contain" />
           <h1 className="mt-3 text-xl font-extrabold text-slate-900">لوحة إدارة originaldz</h1>
         </div>
         <input
