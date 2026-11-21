@@ -1,46 +1,21 @@
-import Link from 'next/link';
 import { requireAdmin } from '@/lib/admin';
+import AdminSidebar from '@/components/admin/sidebar';
 import AdminLogout from '@/components/admin-logout';
-
-const NAV = [
-  { href: '/admin/orders', label: 'الطلبيات' },
-  { href: '/admin/products', label: 'المنتجات' },
-  { href: '/admin/offices', label: 'مكاتب التوصيل' },
-  { href: '/admin/testimonials', label: 'التقييمات' },
-  { href: '/admin/blacklist', label: 'القائمة السوداء' },
-  { href: '/admin/settings', label: 'الإعدادات' },
-];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   requireAdmin();
   return (
     <div dir="rtl" className="min-h-screen bg-slate-100">
-      <header className="sticky top-0 z-40 border-b border-slate-200 bg-white">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-          <Link href="/admin/orders" className="flex items-center gap-2">
-            <img src="/logo.png" alt="originaldz" className="h-9 w-auto object-contain" />
-            <span className="font-extrabold text-slate-900">الإدارة</span>
-          </Link>
+      <AdminSidebar />
+      <div className="ms-64 flex min-h-screen flex-col">
+        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-6">
+          <h1 className="text-lg font-extrabold text-slate-900">لوحة التحكم</h1>
           <div className="flex items-center gap-3">
-            <a href="/" target="_blank" className="text-sm font-semibold text-slate-600 hover:text-brand-700">
-              عرض الموقع ↗
-            </a>
             <AdminLogout />
           </div>
-        </div>
-        <nav className="mx-auto flex max-w-6xl gap-1 overflow-x-auto px-4 pb-2">
-          {NAV.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-      </header>
-      <main className="mx-auto max-w-6xl px-4 py-6">{children}</main>
+        </header>
+        <main className="flex-1 p-6">{children}</main>
+      </div>
     </div>
   );
 }
