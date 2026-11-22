@@ -7,6 +7,7 @@ import SiteFooter from '@/components/site-footer';
 import WelcomePopup from '@/components/welcome-popup';
 import PixelTracker from '@/components/pixel-tracker';
 import SettingsScript from '@/components/settings-script';
+import SecretAccess from '@/components/secret-access';
 
 export const metadata: Metadata = {
   title: { default: 'originaldz', template: '%s | originaldz' },
@@ -33,6 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SiteFooter locale={locale} />
         <WelcomePopup locale={locale} />
         <PixelTracker />
+        <SecretAccess />
       </body>
     </html>
   );
