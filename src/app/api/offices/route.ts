@@ -7,7 +7,7 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const wilaya = Number(searchParams.get('wilaya'));
   if (!Number.isInteger(wilaya)) {
-    return NextResponse.json([]);
+    return NextResponse.json([], { headers: { 'Cache-Control': 'no-store, max-age=0' } });
   }
   try {
     const sb = getSupabase();
@@ -17,8 +17,8 @@ export async function GET(req: Request) {
       .eq('wilaya_code', wilaya)
       .eq('active', true)
       .order('name_fr');
-    return NextResponse.json(data ?? []);
+    return NextResponse.json(data ?? [], { headers: { 'Cache-Control': 'no-store, max-age=0' } });
   } catch {
-    return NextResponse.json([]);
+    return NextResponse.json([], { headers: { 'Cache-Control': 'no-store, max-age=0' } });
   }
 }
