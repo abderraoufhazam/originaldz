@@ -8,6 +8,7 @@ import WelcomePopup from '@/components/welcome-popup';
 import PixelTracker from '@/components/pixel-tracker';
 import SettingsScript from '@/components/settings-script';
 import SecretAccess from '@/components/secret-access';
+import AnimatedBackground from '@/components/animated-background';
 
 export const metadata: Metadata = {
   title: { default: 'originaldz', template: '%s | originaldz' },
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="flex min-h-screen flex-col">
+        <AnimatedBackground />
         <SettingsScript />
         <SiteHeader locale={locale} />
         <main className="flex-1">{children}</main>

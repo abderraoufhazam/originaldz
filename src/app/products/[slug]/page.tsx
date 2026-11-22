@@ -75,7 +75,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
     : 0;
 
   return (
-    <div className="bg-slate-50">
+    <div>
       <div className="mx-auto max-w-6xl px-4 py-8">
         {/* Breadcrumb */}
         <nav className="mb-6 text-sm text-slate-500">
