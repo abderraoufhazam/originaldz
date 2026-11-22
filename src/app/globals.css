@@ -11,16 +11,14 @@ html {
 }
 
 body {
-  @apply bg-white text-slate-900 antialiased;
+  @apply bg-white text-slate-800 antialiased;
 }
 
-/* Simple focus ring for accessibility */
 :focus-visible {
-  outline: 2px solid #059669;
+  outline: 2px solid #4f46e5;
   outline-offset: 2px;
 }
 
-/* Scrollbar (subtle) */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -31,4 +29,13 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent;
+  }
+  .text-gradient-brand {
+    @apply bg-gradient-to-r from-brand-300 to-brand-500 bg-clip-text text-transparent;
+  }
 }

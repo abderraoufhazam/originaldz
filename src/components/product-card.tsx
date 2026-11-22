@@ -8,45 +8,54 @@ export default function ProductCard({ product, locale }: { product: Product; loc
   const dict = getDictionary(locale);
   const title = productTitle(product, locale);
   const out = product.stock <= 0;
+  const lowStock = !out && product.stock <= 5;
+  const onSale = Boolean(product.compare_at_price && product.compare_at_price > product.price);
 
   return (
     <Link
       href={`/products/${product.slug}`}
-      className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition hover:-translate-y-0.5 hover:shadow-lg"
+      className="group flex flex-col overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-soft transition duration-300 hover:-translate-y-1 hover:shadow-lift"
     >
       <div className="relative aspect-square overflow-hidden bg-slate-100">
         <img
           src={firstImage(product)}
           alt={title}
           loading="lazy"
-          className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+          className="h-full w-full object-cover transition duration-500 group-hover:scale-110"
         />
-        {out ? (
-          <span className="absolute top-3 start-3 rounded-full bg-slate-800 px-3 py-1 text-xs font-bold text-white">
-            {t(dict, 'product.outOfStock')}
-          </span>
-        ) : product.stock <= 5 ? (
-          <span className="absolute top-3 start-3 rounded-full bg-red-500 px-3 py-1 text-xs font-bold text-white">
-            {t(dict, 'product.stockLeft', { n: product.stock })}
-          </span>
-        ) : null}
-        {product.compare_at_price && product.compare_at_price > product.price ? (
-          <span className="absolute top-3 end-3 rounded-full bg-accent-500 px-2 py-1 text-xs font-bold text-white">
-            -{Math.round((1 - product.price / product.compare_at_price) * 100)}%
-          </span>
-        ) : null}
-      </div>
-      <div className="flex flex-1 flex-col gap-2 p-4">
-        <h3 className="line-clamp-2 text-sm font-bold text-slate-900">{title}</h3>
-        <div className="mt-auto flex items-baseline gap-2">
-          <span className="text-lg font-extrabold text-brand-800">{formatPrice(product.price, locale)}</span>
-          {product.compare_at_price && product.compare_at_price > product.price ? (
-            <span className="text-xs text-slate-400 line-through">
-              {formatPrice(product.compare_at_price, locale)}
+        <div className="absolute inset-x-0 top-0 flex items-start justify-between p-3">
+          {out ? (
+            <span className="rounded-full bg-slate-900/85 px-3 py-1 text-xs font-bold text-white">
+              {t(dict, 'product.outOfStock')}
+            </span>
+          ) : lowStock ? (
+            <span className="rounded-full bg-rose-500 px-3 py-1 text-xs font-bold text-white">
+              {t(dict, 'product.stockLeft', { n: product.stock })}
+            </span>
+          ) : (
+            <span className="rounded-full bg-emerald-500/90 px-3 py-1 text-xs font-bold text-white">
+              {t(dict, 'common.cod')}
+            </span>
+          )}
+          {onSale ? (
+            <span className="rounded-full bg-amber-500 px-2.5 py-1 text-xs font-extrabold text-white">
+              −{Math.round((1 - product.price / product.compare_at_price!) * 100)}%
             </span>
           ) : null}
         </div>
-        <span className="mt-1 inline-flex w-fit items-center gap-1 text-xs font-semibold text-brand-700">
+      </div>
+
+      <div className="flex flex-1 flex-col gap-2 p-4">
+        <h3 className="line-clamp-2 text-sm font-bold text-slate-900">{title}</h3>
+        <div className="mt-auto flex items-baseline gap-2">
+          <span className="text-lg font-extrabold text-brand-700">{formatPrice(product.price, locale)}</span>
+          {onSale ? (
+            <span className="text-xs text-slate-400 line-through">
+              {formatPrice(product.compare_at_price!, locale)}
+            </span>
+          ) : null}
+        </div>
+        <span className="inline-flex w-fit items-center gap-1 rounded-full bg-brand-50 px-3 py-1 text-xs font-bold text-brand-700 transition group-hover:bg-brand-600 group-hover:text-white">
           {t(dict, 'common.orderNow')} →
         </span>
       </div>
