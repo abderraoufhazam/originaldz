@@ -3,6 +3,7 @@ import { getDictionary, t } from '@/lib/i18n';
 import { getSupabase } from '@/lib/supabase';
 import type { Product } from '@/lib/types';
 import ProductCard from '@/components/product-card';
+import SortSelect from '@/components/sort-select';
 
 export const dynamic = 'force-dynamic';
 
@@ -65,20 +66,16 @@ export default async function ProductsPage({
               className="w-full rounded-xl border border-slate-300 px-4 py-2 outline-none focus:border-brand-600"
             />
           </form>
-          <form method="GET" className="w-40">
-            {q ? <input type="hidden" name="q" value={q} /> : null}
-            {category ? <input type="hidden" name="category" value={category} /> : null}
-            <select
-              name="sort"
-              defaultValue={sort}
-              onChange={(e) => e.currentTarget.form?.submit()}
-              className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 outline-none focus:border-brand-600"
-            >
-              <option value="newest">{t(dict, 'catalog.sortNewest')}</option>
-              <option value="price_asc">{t(dict, 'catalog.sortPriceAsc')}</option>
-              <option value="price_desc">{t(dict, 'catalog.sortPriceDesc')}</option>
-            </select>
-          </form>
+          <div className="w-40">
+            <SortSelect
+              current={sort}
+              options={[
+                { value: 'newest', label: t(dict, 'catalog.sortNewest') },
+                { value: 'price_asc', label: t(dict, 'catalog.sortPriceAsc') },
+                { value: 'price_desc', label: t(dict, 'catalog.sortPriceDesc') },
+              ]}
+            />
+          </div>
         </div>
       </div>
 
