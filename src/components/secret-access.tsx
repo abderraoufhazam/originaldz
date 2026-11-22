@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 
 const CODE = 'ordiz';
 
-/** Hidden keyboard shortcut: typing "ordiz" anywhere opens the admin login. */
+/** Hidden keyboard shortcut: typing "ordiz" anywhere (computer only) opens the admin login. */
 export default function SecretAccess() {
   const buffer = useRef('');
 
