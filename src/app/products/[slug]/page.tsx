@@ -10,6 +10,8 @@ import type { Product, Testimonial } from '@/lib/types';
 import OrderForm from '@/components/order-form';
 import ShareButton from '@/components/share-button';
 import Gallery from '@/components/gallery';
+import ProductCard from '@/components/product-card';
+import { submitReview } from '@/app/admin/actions';
 
 export const dynamic = 'force-dynamic';
 
@@ -44,18 +46,31 @@ export default async function ProductPage({ params }: { params: { slug: string }
 
   let product: Product | null = null;
   let testimonials: Testimonial[] = [];
+  let related: Product[] = [];
+  let bestSeller = false;
   try {
     const sb = getSupabase();
     const { data } = await sb.from('products').select('*').eq('slug', params.slug).eq('active', true).single();
     if (data) {
       product = data as Product;
-      const rev = await sb
-        .from('testimonials')
-        .select('*')
-        .eq('product_id', product.id)
-        .eq('active', true)
-        .order('created_at', { ascending: false });
+      const [rev, rel, ord] = await Promise.all([
+        sb.from('testimonials').select('*').eq('product_id', product.id).eq('active', true).order('created_at', { ascending: false }),
+        product.category
+          ? sb.from('products').select('*').eq('category', product.category).neq('id', product.id).eq('active', true).limit(4)
+          : Promise.resolve({ data: [] as Product[] }),
+        sb.from('orders').select('product_id'),
+      ]);
       testimonials = (rev.data as Testimonial[]) ?? [];
+      related = (rel.data as Product[]) ?? [];
+      const counts: Record<string, number> = {};
+      for (const r of (ord.data ?? []) as { product_id: string | null }[]) {
+        if (r.product_id) counts[r.product_id] = (counts[r.product_id] ?? 0) + 1;
+      }
+      const top = Object.entries(counts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5)
+        .map(([id]) => id);
+      bestSeller = top.includes(product.id);
     }
   } catch {
     product = null;
@@ -101,11 +116,18 @@ export default async function ProductPage({ params }: { params: { slug: string }
 
           {/* Info + order form column */}
           <div>
-            {product.category ? (
-              <span className="inline-block rounded-full bg-brand-100 px-3 py-1 text-xs font-bold text-brand-800">
-                {product.category}
-              </span>
-            ) : null}
+            <div className="flex flex-wrap items-center gap-2">
+              {product.category ? (
+                <span className="inline-block rounded-full bg-brand-100 px-3 py-1 text-xs font-bold text-brand-800">
+                  {product.category}
+                </span>
+              ) : null}
+              {bestSeller ? (
+                <span className="inline-block rounded-full bg-amber-500 px-3 py-1 text-xs font-extrabold text-white">
+                  🔥 الأكثر مبيعًا
+                </span>
+              ) : null}
+            </div>
 
             <h1 className="mt-2 text-2xl font-extrabold text-slate-900 md:text-3xl">{title}</h1>
 
@@ -212,7 +234,47 @@ export default async function ProductPage({ params }: { params: { slug: string }
               ))}
             </div>
           )}
+
+          <form action={submitReview} className="mt-6 max-w-lg rounded-2xl border border-slate-200 bg-white p-5">
+            <input type="hidden" name="product_id" value={product.id} />
+            <h3 className="font-bold text-slate-900">أضف تقييمك</h3>
+            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+              <input
+                name="customer_name"
+                placeholder="اسمك"
+                required
+                className="rounded-xl border border-slate-300 px-3 py-2 outline-none focus:border-brand-600"
+              />
+              <select name="rating" defaultValue="5" className="rounded-xl border border-slate-300 px-3 py-2 outline-none focus:border-brand-600">
+                {[5, 4, 3, 2, 1].map((n) => (
+                  <option key={n} value={n}>{'★'.repeat(n)}</option>
+                ))}
+              </select>
+            </div>
+            <textarea
+              name="text_ar"
+              placeholder="رأيك في المنتج…"
+              rows={3}
+              className="mt-3 w-full rounded-xl border border-slate-300 px-3 py-2 outline-none focus:border-brand-600"
+            />
+            <button type="submit" className="mt-3 rounded-xl bg-brand-600 px-6 py-2.5 font-bold text-white hover:bg-brand-700">
+              إرسال التقييم
+            </button>
+            <p className="mt-2 text-xs text-slate-400">يظهر تقييمك بعد مراجعته من الإدارة.</p>
+          </form>
         </section>
+
+        {/* Related products */}
+        {related.length > 0 ? (
+          <section className="mt-12">
+            <h2 className="text-xl font-extrabold text-slate-900">منتجات ذات صلة</h2>
+            <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
+              {related.map((p) => (
+                <ProductCard key={p.id} product={p} locale={locale} />
+              ))}
+            </div>
+          </section>
+        ) : null}
       </div>
     </div>
   );

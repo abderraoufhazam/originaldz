@@ -145,8 +145,20 @@ insert into settings (key, value) values
   ('tiktok_pixel', '""'::jsonb),
   ('welcome_discount', '10'::jsonb),
   ('loyalty_discount', '5'::jsonb),
-  ('delivery_fee_mode', '"per_wilaya"'::jsonb)
+  ('delivery_fee_mode', '"per_wilaya"'::jsonb),
+  ('maintenance_mode', 'false'::jsonb)
 on conflict (key) do nothing;
+
+-- ---------------------------------------------------------------------------
+-- Coupons (feature 5)
+-- ---------------------------------------------------------------------------
+create table if not exists coupons (
+  id uuid primary key default gen_random_uuid(),
+  code text unique not null,
+  discount_percent integer not null default 0,
+  active boolean not null default true,
+  created_at timestamptz not null default now()
+);
 
 -- ---------------------------------------------------------------------------
 -- Grants for the API roles (tables created by hand need explicit grants).

@@ -1,6 +1,6 @@
 import { requireAdmin } from '@/lib/admin';
 import { getSupabase } from '@/lib/supabase';
-import { addTestimonial, removeTestimonial } from '@/app/admin/actions';
+import { addTestimonial, removeTestimonial, approveTestimonial } from '@/app/admin/actions';
 import type { Testimonial } from '@/lib/types';
 
 export const dynamic = 'force-dynamic';
@@ -27,12 +27,22 @@ export default async function TestimonialsPage() {
                   <div className="flex items-center gap-2">
                     <span className="font-bold text-slate-900">{r.customer_name}</span>
                     <span className="text-amber-500">{'★'.repeat(r.rating)}</span>
+                    {!r.active ? (
+                      <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-bold text-amber-700">بانتظار الموافقة</span>
+                    ) : null}
                   </div>
                   <p className="mt-1 text-sm text-slate-600">{r.text_ar || r.text_en}</p>
                 </div>
-                <form action={removeTestimonial.bind(null, r.id)}>
-                  <button type="submit" className="text-sm font-bold text-red-600 hover:underline">حذف</button>
-                </form>
+                <div className="flex items-center gap-3">
+                  {!r.active ? (
+                    <form action={approveTestimonial.bind(null, r.id)}>
+                      <button type="submit" className="text-sm font-bold text-green-600 hover:underline">اعتماد</button>
+                    </form>
+                  ) : null}
+                  <form action={removeTestimonial.bind(null, r.id)}>
+                    <button type="submit" className="text-sm font-bold text-red-600 hover:underline">حذف</button>
+                  </form>
+                </div>
               </li>
             ))}
           </ul>

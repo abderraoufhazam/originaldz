@@ -9,12 +9,13 @@ export const dynamic = 'force-dynamic';
 export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams: { q?: string; category?: string };
+  searchParams: { q?: string; category?: string; sort?: string };
 }) {
   const locale = getLocale();
   const dict = getDictionary(locale);
   const q = (searchParams.q ?? '').trim();
   const category = (searchParams.category ?? '').trim();
+  const sort = searchParams.sort ?? 'newest';
 
   let products: Product[] = [];
   try {
@@ -42,6 +43,9 @@ export default async function ProductsPage({
     products = products.filter((p) => p.category === category);
   }
 
+  if (sort === 'price_asc') products = [...products].sort((a, b) => a.price - b.price);
+  if (sort === 'price_desc') products = [...products].sort((a, b) => b.price - a.price);
+
   const categories = Array.from(
     new Set(products.map((p) => p.category).filter((c): c is string => Boolean(c))),
   );
@@ -50,15 +54,32 @@ export default async function ProductsPage({
     <div className="mx-auto max-w-6xl px-4 py-10">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-2xl font-extrabold text-slate-900">{t(dict, 'catalog.title')}</h1>
-        <form method="GET" className="flex w-full gap-2 sm:w-72">
-          <input
-            type="search"
-            name="q"
-            defaultValue={q}
-            placeholder={t(dict, 'catalog.search')}
-            className="w-full rounded-xl border border-slate-300 px-4 py-2 outline-none focus:border-brand-600"
-          />
-        </form>
+        <div className="flex w-full gap-2 sm:w-auto">
+          <form method="GET" className="flex flex-1 gap-2 sm:w-64">
+            {category ? <input type="hidden" name="category" value={category} /> : null}
+            <input
+              type="search"
+              name="q"
+              defaultValue={q}
+              placeholder={t(dict, 'catalog.search')}
+              className="w-full rounded-xl border border-slate-300 px-4 py-2 outline-none focus:border-brand-600"
+            />
+          </form>
+          <form method="GET" className="w-40">
+            {q ? <input type="hidden" name="q" value={q} /> : null}
+            {category ? <input type="hidden" name="category" value={category} /> : null}
+            <select
+              name="sort"
+              defaultValue={sort}
+              onChange={(e) => e.currentTarget.form?.submit()}
+              className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 outline-none focus:border-brand-600"
+            >
+              <option value="newest">{t(dict, 'catalog.sortNewest')}</option>
+              <option value="price_asc">{t(dict, 'catalog.sortPriceAsc')}</option>
+              <option value="price_desc">{t(dict, 'catalog.sortPriceDesc')}</option>
+            </select>
+          </form>
+        </div>
       </div>
 
       {categories.length > 0 ? (

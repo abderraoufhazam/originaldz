@@ -19,6 +19,7 @@ export default async function SiteHeader({ locale }: { locale: Locale }) {
   const nav = [
     { href: '/', label: t(dict, 'nav.home') },
     { href: '/products', label: t(dict, 'nav.products') },
+    { href: '/track', label: t(dict, 'nav.track') },
     { href: '/about', label: t(dict, 'nav.about') },
     { href: '/faq', label: t(dict, 'nav.faq') },
   ];

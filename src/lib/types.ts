@@ -124,4 +124,13 @@ export interface Settings {
   welcome_discount: number;
   loyalty_discount: number;
   delivery_fee_mode: 'free' | 'per_wilaya';
+  maintenance_mode: boolean;
+}
+
+export interface Coupon {
+  id: string;
+  code: string;
+  discount_percent: number;
+  active: boolean;
+  created_at: string;
 }

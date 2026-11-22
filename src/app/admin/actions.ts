@@ -172,7 +172,48 @@ export async function saveSettings(formData: FormData) {
     tiktok_pixel: (formData.get('tiktok_pixel') as string) || '',
     welcome_discount: num(formData.get('welcome_discount') as string, 10),
     loyalty_discount: num(formData.get('loyalty_discount') as string, 5),
+    maintenance_mode: formData.get('maintenance_mode') === 'on',
   };
   await persistSettings(patch);
+  revalidatePath('/', 'layout');
+}
+
+export async function addCoupon(formData: FormData) {
+  requireAdmin();
+  const code = ((formData.get('code') as string) || '').trim().toUpperCase();
+  const discount = Number(formData.get('discount_percent'));
+  if (code && discount > 0 && discount <= 100) {
+    await getSupabase()
+      .from('coupons')
+      .upsert({ code, discount_percent: discount, active: formData.get('active') === 'on' }, { onConflict: 'code' });
+  }
+  revalidatePath('/', 'layout');
+}
+
+export async function removeCoupon(id: string) {
+  requireAdmin();
+  await getSupabase().from('coupons').delete().eq('id', id);
+  revalidatePath('/', 'layout');
+}
+
+export async function approveTestimonial(id: string) {
+  requireAdmin();
+  await getSupabase().from('testimonials').update({ active: true }).eq('id', id);
+  revalidatePath('/', 'layout');
+}
+
+export async function submitReview(formData: FormData) {
+  const productId = formData.get('product_id') as string;
+  const name = ((formData.get('customer_name') as string) || '').trim();
+  if (!productId || !name) return;
+  await getSupabase().from('testimonials').insert({
+    product_id: productId,
+    customer_name: name,
+    text_ar: (formData.get('text_ar') as string) || '',
+    text_en: (formData.get('text_en') as string) || '',
+    text_fr: (formData.get('text_fr') as string) || '',
+    rating: Number(formData.get('rating')) || 5,
+    active: false,
+  });
   revalidatePath('/', 'layout');
 }

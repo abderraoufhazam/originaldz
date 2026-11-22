@@ -9,6 +9,7 @@ export const dictionaries: Record<Locale, Dict> = {
     'nav.about': 'من نحن',
     'nav.faq': 'الأسئلة الشائعة',
     'nav.contact': 'اتصل بنا',
+    'nav.track': 'تتبع الطلب',
 
     'hero.cta': 'تسوّق الآن',
     'hero.seeProducts': 'تصفّح المنتجات',
@@ -83,6 +84,9 @@ export const dictionaries: Record<Locale, Dict> = {
     'catalog.title': 'المنتجات',
     'catalog.empty': 'لا توجد منتجات في هذا القسم.',
     'catalog.search': 'ابحث عن منتج…',
+    'catalog.sortNewest': 'الأحدث',
+    'catalog.sortPriceAsc': 'السعر: من الأقل',
+    'catalog.sortPriceDesc': 'السعر: من الأعلى',
 
     'order.subtotal': 'سعر المنتج',
     'order.deliveryFee': 'تكلفة التوصيل',
@@ -98,6 +102,7 @@ export const dictionaries: Record<Locale, Dict> = {
     'nav.about': 'About',
     'nav.faq': 'FAQ',
     'nav.contact': 'Contact',
+    'nav.track': 'Track order',
 
     'hero.cta': 'Shop now',
     'hero.seeProducts': 'Browse products',
@@ -172,6 +177,9 @@ export const dictionaries: Record<Locale, Dict> = {
     'catalog.title': 'Products',
     'catalog.empty': 'No products in this category.',
     'catalog.search': 'Search for a product…',
+    'catalog.sortNewest': 'Newest',
+    'catalog.sortPriceAsc': 'Price: low to high',
+    'catalog.sortPriceDesc': 'Price: high to low',
 
     'order.subtotal': 'Subtotal',
     'order.deliveryFee': 'Delivery fee',
@@ -187,6 +195,7 @@ export const dictionaries: Record<Locale, Dict> = {
     'nav.about': 'À propos',
     'nav.faq': 'FAQ',
     'nav.contact': 'Contact',
+    'nav.track': 'Suivi de commande',
 
     'hero.cta': 'Acheter',
     'hero.seeProducts': 'Voir les produits',
@@ -261,6 +270,9 @@ export const dictionaries: Record<Locale, Dict> = {
     'catalog.title': 'Produits',
     'catalog.empty': 'Aucun produit dans cette catégorie.',
     'catalog.search': 'Rechercher un produit…',
+    'catalog.sortNewest': 'Plus récent',
+    'catalog.sortPriceAsc': 'Prix : croissant',
+    'catalog.sortPriceDesc': 'Prix : décroissant',
 
     'order.subtotal': 'Sous-total',
     'order.deliveryFee': 'Frais de livraison',

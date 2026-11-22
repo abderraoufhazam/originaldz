@@ -57,6 +57,14 @@ export default async function SettingsPage() {
           <input name="tiktok_pixel" defaultValue={s.tiktok_pixel} dir="ltr" className={inputCls} placeholder="ABCDEF123" />
         </div>
 
+        <div className="rounded-2xl border border-slate-200 bg-white p-6">
+          <h2 className="text-lg font-extrabold text-slate-900">الصيانة</h2>
+          <label className="mt-4 flex items-center gap-3 text-sm font-semibold text-slate-700">
+            <input type="checkbox" name="maintenance_mode" defaultChecked={s.maintenance_mode} />
+            تفعيل وضع الصيانة (إخفاء المتجر عن الزوار — أنت فقط تدخله)
+          </label>
+        </div>
+
         <button type="submit" className="rounded-xl bg-brand-800 px-8 py-3 font-bold text-white hover:bg-brand-900">
           حفظ الإعدادات
         </button>

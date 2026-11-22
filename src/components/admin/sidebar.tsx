@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 const ITEMS = [
   { href: '/admin/orders', label: 'الطلبيات', icon: '🛒' },
   { href: '/admin/products', label: 'المنتجات', icon: '📦' },
+  { href: '/admin/coupons', label: 'الكوبونات', icon: '🎟️' },
   { href: '/admin/offices', label: 'مكاتب التوصيل', icon: '📍' },
   { href: '/admin/testimonials', label: 'التقييمات', icon: '⭐' },
   { href: '/admin/blacklist', label: 'القائمة السوداء', icon: '🚫' },

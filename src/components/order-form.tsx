@@ -38,6 +38,7 @@ export default function OrderForm({ product, wilayas, locale }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [result, setResult] = useState<Result | null>(null);
+  const [coupon, setCoupon] = useState('');
   const [prices, setPrices] = useState<Record<number, { office: number | null; home: number | null }>>({});
 
   useEffect(() => {
@@ -146,12 +147,17 @@ export default function OrderForm({ product, wilayas, locale }: Props) {
         utm_medium: new URLSearchParams(window.location.search).get('utm_medium') || '',
         utm_campaign: new URLSearchParams(window.location.search).get('utm_campaign') || '',
         utm_content: new URLSearchParams(window.location.search).get('utm_content') || '',
+        coupon,
       }),
     })
       .then(async (r) => {
         const data = await r.json().catch(() => ({}));
         if (!r.ok) {
-          setError(data.error || 'error');
+          setError(
+            data.error === 'duplicate'
+              ? 'تم استلام طلبك بالفعل مؤخرًا — سنتصل بك للتأكيد.'
+              : data.error || 'error',
+          );
           return;
         }
         window.dispatchEvent(new CustomEvent('odz:order', { detail: { total: data.total } }));
@@ -345,6 +351,18 @@ export default function OrderForm({ product, wilayas, locale }: Props) {
             </div>
           </>
         ) : null}
+
+        {/* Coupon */}
+        <div>
+          <label className="mb-1 block text-sm font-semibold text-slate-700">كوبون خصم (اختياري)</label>
+          <input
+            value={coupon}
+            onChange={(e) => setCoupon(e.target.value.toUpperCase())}
+            placeholder="ODZ10"
+            className={inputCls}
+            dir="ltr"
+          />
+        </div>
 
         {/* Total */}
         <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm">

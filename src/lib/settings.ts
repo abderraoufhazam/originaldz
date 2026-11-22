@@ -13,6 +13,7 @@ export const DEFAULT_SETTINGS: Settings = {
   welcome_discount: 10,
   loyalty_discount: 5,
   delivery_fee_mode: 'per_wilaya',
+  maintenance_mode: false,
 };
 
 let cache: { settings: Settings; at: number } | null = null;

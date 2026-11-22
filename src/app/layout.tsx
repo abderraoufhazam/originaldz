@@ -9,15 +9,28 @@ import PixelTracker from '@/components/pixel-tracker';
 import SettingsScript from '@/components/settings-script';
 import SecretAccess from '@/components/secret-access';
 import AnimatedBackground from '@/components/animated-background';
+import MaintenanceGate from '@/components/maintenance-gate';
+import { getSettings } from '@/lib/settings';
+import { isAdmin } from '@/lib/admin';
 
 export const metadata: Metadata = {
   title: { default: 'originaldz', template: '%s | originaldz' },
   description: 'originaldz — متجر الدفع عند الاستلام في الجزائر',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const locale = getLocale();
   const dir = LOCALE_DIRS[locale];
+
+  let maintenance = false;
+  try {
+    const s = await getSettings();
+    maintenance = s.maintenance_mode;
+  } catch {
+    /* ignore */
+  }
+  const admin = isAdmin();
+
   return (
     <html lang={locale} dir={dir}>
       <head>
@@ -31,12 +44,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="flex min-h-screen flex-col">
         <AnimatedBackground />
         <SettingsScript />
-        <SiteHeader locale={locale} />
-        <main className="flex-1">{children}</main>
-        <SiteFooter locale={locale} />
-        <WelcomePopup locale={locale} />
         <PixelTracker />
         <SecretAccess />
+        <MaintenanceGate maintenance={maintenance} admin={admin}>
+          <SiteHeader locale={locale} />
+          <main className="flex-1">{children}</main>
+          <SiteFooter locale={locale} />
+          <WelcomePopup locale={locale} />
+        </MaintenanceGate>
       </body>
     </html>
   );

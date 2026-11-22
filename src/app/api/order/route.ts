@@ -24,6 +24,7 @@ interface Body {
   utm_medium?: string;
   utm_campaign?: string;
   utm_content?: string;
+  coupon?: string;
 }
 
 export async function POST(req: Request) {
@@ -69,6 +70,17 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'order rejected' }, { status: 403 });
   }
 
+  // Duplicate protection (feature 8): same phone within 5 minutes.
+  const fiveMinAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
+  const { count: recentCount } = await sb
+    .from('orders')
+    .select('*', { count: 'exact', head: true })
+    .eq('phone', phone)
+    .gte('created_at', fiveMinAgo);
+  if ((recentCount ?? 0) > 0) {
+    return NextResponse.json({ error: 'duplicate' }, { status: 429 });
+  }
+
   // Product
   const { data: product } = await sb.from('products').select('*').eq('id', body.product_id).single();
   if (!product || !product.active || product.stock <= 0) {
@@ -94,7 +106,21 @@ export async function POST(req: Request) {
   const settings = await getSettings();
   const bundlePercent = product.bundle_min > 0 && quantity >= product.bundle_min ? product.bundle_discount : 0;
   const customerPercent = isReturning ? settings.loyalty_discount : settings.welcome_discount;
-  const discountPercent = Math.min(50, bundlePercent + customerPercent);
+
+  // Coupon (feature 5)
+  let couponPercent = 0;
+  const couponCode = (body.coupon ?? '').trim().toUpperCase();
+  if (couponCode) {
+    const { data: coupon } = await sb
+      .from('coupons')
+      .select('discount_percent')
+      .eq('code', couponCode)
+      .eq('active', true)
+      .maybeSingle();
+    if (coupon) couponPercent = Number(coupon.discount_percent);
+  }
+
+  const discountPercent = Math.min(50, bundlePercent + customerPercent + couponPercent);
 
   const unitPrice = product.price;
   const subtotal = unitPrice * quantity;

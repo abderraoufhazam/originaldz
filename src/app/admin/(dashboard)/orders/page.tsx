@@ -40,6 +40,18 @@ export default async function OrdersPage({
 
   const tabs = ['all', 'new', 'confirmed', 'shipped', 'delivered', 'cancelled'];
 
+  // Last 7 days chart (from the recent orders already loaded)
+  const dayLabels: string[] = [];
+  const dayCounts: number[] = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    const key = d.toISOString().slice(0, 10);
+    dayLabels.push(d.toLocaleDateString('ar-DZ', { weekday: 'short' }));
+    dayCounts.push(orders.filter((o) => String(o.created_at ?? '').slice(0, 10) === key).length);
+  }
+  const maxDay = Math.max(1, ...dayCounts);
+
   const stats = [
     { label: 'إجمالي الطلبيات', value: String(totalCount ?? 0), icon: '🛒', color: 'text-slate-900' },
     { label: 'طلبيات جديدة', value: String(newCount ?? 0), icon: '🆕', color: 'text-blue-600' },
@@ -51,15 +63,23 @@ export default async function OrdersPage({
     <div>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-extrabold text-slate-900">الطلبيات</h1>
-        <form method="GET" className="w-full sm:w-72">
-          <input
-            type="search"
-            name="q"
-            defaultValue={searchParams.q ?? ''}
-            placeholder="ابحث بالاسم، الهاتف، رقم الطلب…"
-            className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2 outline-none focus:border-brand-600"
-          />
-        </form>
+        <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto">
+          <form method="GET" className="flex-1 sm:w-64">
+            <input
+              type="search"
+              name="q"
+              defaultValue={searchParams.q ?? ''}
+              placeholder="ابحث بالاسم، الهاتف، رقم الطلب…"
+              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2 outline-none focus:border-brand-600"
+            />
+          </form>
+          <a href="/api/admin/export-orders" className="rounded-xl bg-slate-800 px-4 py-2 text-sm font-bold text-white hover:bg-slate-900">
+            ⬇️ تصدير Excel
+          </a>
+          <a href="/api/admin/backup" className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-bold text-slate-700 hover:bg-slate-50">
+            💾 نسخة احتياطية
+          </a>
+        </div>
       </div>
 
       {/* Stats */}
@@ -73,6 +93,23 @@ export default async function OrdersPage({
             <p className="mt-2 text-sm font-semibold text-slate-500">{s.label}</p>
           </div>
         ))}
+      </div>
+
+      {/* 7-day chart */}
+      <div className="mt-5 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <h2 className="text-sm font-bold text-slate-700">الطلبات — آخر 7 أيام</h2>
+        <div className="mt-4 flex items-end gap-2">
+          {dayCounts.map((c, i) => (
+            <div key={i} className="flex flex-1 flex-col items-center gap-1">
+              <span className="text-xs font-bold text-slate-600">{c}</span>
+              <div
+                className="w-full rounded-t-lg bg-gradient-to-t from-brand-600 to-brand-400"
+                style={{ height: `${Math.max(4, Math.round((c / maxDay) * 80))}px` }}
+              />
+              <span className="text-xs text-slate-400">{dayLabels[i]}</span>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Tabs */}
