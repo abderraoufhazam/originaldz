@@ -85,6 +85,17 @@ export default function ProductForm({ product }: { product?: Product | null }) {
         </div>
       </div>
 
+      <div className="grid gap-4 md:grid-cols-2">
+        <div>
+          <label className={labelCls}>التكلفة (دج) — لحساب الربح</label>
+          <input name="cost" type="number" defaultValue={p?.cost ?? 0} className={inputCls} />
+        </div>
+        <div>
+          <label className={labelCls}>رابط الفيديو (اختياري)</label>
+          <input name="video_url" defaultValue={p?.video_url ?? ''} dir="ltr" className={inputCls} placeholder="https://…" />
+        </div>
+      </div>
+
       <label className={labelCls}>صور المنتج (اختر ملفات)</label>
       <input name="images" type="file" multiple accept="image/*" className={inputCls} />
 

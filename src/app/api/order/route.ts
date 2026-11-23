@@ -81,6 +81,18 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'duplicate' }, { status: 429 });
   }
 
+  // Daily limit per phone (feature 8): max 3 orders/day.
+  const dayStart = new Date();
+  dayStart.setHours(0, 0, 0, 0);
+  const { count: dayCount } = await sb
+    .from('orders')
+    .select('*', { count: 'exact', head: true })
+    .eq('phone', phone)
+    .gte('created_at', dayStart.toISOString());
+  if ((dayCount ?? 0) >= 3) {
+    return NextResponse.json({ error: 'limit' }, { status: 429 });
+  }
+
   // Product
   const { data: product } = await sb.from('products').select('*').eq('id', body.product_id).single();
   if (!product || !product.active || product.stock <= 0) {

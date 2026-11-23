@@ -33,11 +33,13 @@ export interface Product {
   price: number;
   compare_at_price: number | null;
   images: string[];
+  video_url: string;
   stock: number;
   active: boolean;
   featured: boolean;
   category: string | null;
   weight_grams: number;
+  cost: number;
   bundle_min: number;
   bundle_discount: number;
   created_at: string;
@@ -125,6 +127,7 @@ export interface Settings {
   loyalty_discount: number;
   delivery_fee_mode: 'free' | 'per_wilaya';
   maintenance_mode: boolean;
+  ga_id: string;
 }
 
 export interface Coupon {

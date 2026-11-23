@@ -111,6 +111,13 @@ export default async function ProductPage({ params }: { params: { slug: string }
                 <TrustBadge icon="🚚">World Express</TrustBadge>
                 <TrustBadge icon="↩️">{t(dict, 'form.weCall')}</TrustBadge>
               </div>
+              {product.video_url ? (
+                <video
+                  src={product.video_url}
+                  controls
+                  className="mt-4 w-full rounded-2xl border border-slate-200 bg-black"
+                />
+              ) : null}
             </div>
           </div>
 
@@ -211,7 +218,14 @@ export default async function ProductPage({ params }: { params: { slug: string }
 
             <div className="mt-4 flex items-center justify-between">
               <ShareButton locale={locale} title={title} />
-              <span className="text-xs text-slate-400">originaldz</span>
+              <div className="flex items-center gap-2">
+                <img
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(`https://www.originaldz.online/products/${params.slug}`)}`}
+                  alt="QR"
+                  className="h-14 w-14 rounded-lg border border-slate-200"
+                />
+                <span className="text-xs font-semibold text-slate-500">امسح للطلب 📱</span>
+              </div>
             </div>
           </div>
         </div>

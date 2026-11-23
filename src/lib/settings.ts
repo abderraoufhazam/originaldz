@@ -14,6 +14,7 @@ export const DEFAULT_SETTINGS: Settings = {
   loyalty_discount: 5,
   delivery_fee_mode: 'per_wilaya',
   maintenance_mode: false,
+  ga_id: '',
 };
 
 let cache: { settings: Settings; at: number } | null = null;

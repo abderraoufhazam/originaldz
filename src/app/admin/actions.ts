@@ -65,6 +65,8 @@ export async function saveProduct(formData: FormData) {
     featured: formData.get('featured') === 'on',
     category: (formData.get('category') as string) || null,
     weight_grams: num(formData.get('weight_grams') as string, 500),
+    cost: num(formData.get('cost') as string),
+    video_url: (formData.get('video_url') as string) || '',
     bundle_min: num(formData.get('bundle_min') as string),
     bundle_discount: num(formData.get('bundle_discount') as string),
     updated_at: new Date().toISOString(),
@@ -173,6 +175,7 @@ export async function saveSettings(formData: FormData) {
     welcome_discount: num(formData.get('welcome_discount') as string, 10),
     loyalty_discount: num(formData.get('loyalty_discount') as string, 5),
     maintenance_mode: formData.get('maintenance_mode') === 'on',
+    ga_id: (formData.get('ga_id') as string) || '',
   };
   await persistSettings(patch);
   revalidatePath('/', 'layout');

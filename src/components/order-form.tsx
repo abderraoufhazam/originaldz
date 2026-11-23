@@ -156,7 +156,9 @@ export default function OrderForm({ product, wilayas, locale }: Props) {
           setError(
             data.error === 'duplicate'
               ? 'تم استلام طلبك بالفعل مؤخرًا — سنتصل بك للتأكيد.'
-              : data.error || 'error',
+              : data.error === 'limit'
+                ? 'وصلت للحد الأقصى من الطلبات اليوم — تواصل معنا عبر واتساب.'
+                : data.error || 'error',
           );
           return;
         }

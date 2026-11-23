@@ -9,6 +9,7 @@ export default async function SettingsScript() {
       tiktok_pixel: s.tiktok_pixel,
       whatsapp: s.whatsapp,
       welcome_discount: s.welcome_discount,
+      ga_id: s.ga_id,
     };
   } catch {
     // Supabase not configured yet — the store still renders.

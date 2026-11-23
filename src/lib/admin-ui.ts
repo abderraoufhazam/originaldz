@@ -4,6 +4,7 @@ export const STATUS_LABELS: Record<string, string> = {
   shipped: 'مشحون',
   delivered: 'مستلم',
   cancelled: 'ملغي',
+  returned: 'مرتجع',
 };
 
 export const STATUS_COLORS: Record<string, string> = {
@@ -12,6 +13,7 @@ export const STATUS_COLORS: Record<string, string> = {
   shipped: 'bg-violet-100 text-violet-700',
   delivered: 'bg-green-100 text-green-700',
   cancelled: 'bg-slate-200 text-slate-600',
+  returned: 'bg-rose-100 text-rose-700',
 };
 
 export const RISK_LABELS: Record<string, string> = {

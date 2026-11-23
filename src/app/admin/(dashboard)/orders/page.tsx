@@ -38,7 +38,7 @@ export default async function OrdersPage({
     );
   }
 
-  const tabs = ['all', 'new', 'confirmed', 'shipped', 'delivered', 'cancelled'];
+  const tabs = ['all', 'new', 'confirmed', 'shipped', 'delivered', 'cancelled', 'returned'];
 
   // Last 7 days chart (from the recent orders already loaded)
   const dayLabels: string[] = [];

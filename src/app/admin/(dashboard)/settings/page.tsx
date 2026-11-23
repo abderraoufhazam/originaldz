@@ -55,6 +55,8 @@ export default async function SettingsPage() {
           <input name="fb_pixel" defaultValue={s.fb_pixel} dir="ltr" className={inputCls} placeholder="1234567890" />
           <label className="mt-4 block text-sm font-semibold text-slate-700">TikTok Pixel ID</label>
           <input name="tiktok_pixel" defaultValue={s.tiktok_pixel} dir="ltr" className={inputCls} placeholder="ABCDEF123" />
+          <label className="mt-4 block text-sm font-semibold text-slate-700">Google Analytics ID</label>
+          <input name="ga_id" defaultValue={s.ga_id} dir="ltr" className={inputCls} placeholder="G-XXXXXXXXXX" />
         </div>
 
         <div className="rounded-2xl border border-slate-200 bg-white p-6">

@@ -146,7 +146,8 @@ insert into settings (key, value) values
   ('welcome_discount', '10'::jsonb),
   ('loyalty_discount', '5'::jsonb),
   ('delivery_fee_mode', '"per_wilaya"'::jsonb),
-  ('maintenance_mode', 'false'::jsonb)
+  ('maintenance_mode', 'false'::jsonb),
+  ('ga_id', '""'::jsonb)
 on conflict (key) do nothing;
 
 -- ---------------------------------------------------------------------------
@@ -159,6 +160,10 @@ create table if not exists coupons (
   active boolean not null default true,
   created_at timestamptz not null default now()
 );
+
+-- Columns added in later releases.
+alter table products add column if not exists cost integer not null default 0;
+alter table products add column if not exists video_url text not null default '';
 
 -- ---------------------------------------------------------------------------
 -- Grants for the API roles (tables created by hand need explicit grants).

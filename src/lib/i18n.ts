@@ -10,6 +10,7 @@ export const dictionaries: Record<Locale, Dict> = {
     'nav.faq': 'الأسئلة الشائعة',
     'nav.contact': 'اتصل بنا',
     'nav.track': 'تتبع الطلب',
+    'nav.sale': 'العروض',
 
     'hero.cta': 'تسوّق الآن',
     'hero.seeProducts': 'تصفّح المنتجات',
@@ -103,6 +104,7 @@ export const dictionaries: Record<Locale, Dict> = {
     'nav.faq': 'FAQ',
     'nav.contact': 'Contact',
     'nav.track': 'Track order',
+    'nav.sale': 'Sale',
 
     'hero.cta': 'Shop now',
     'hero.seeProducts': 'Browse products',
@@ -196,6 +198,7 @@ export const dictionaries: Record<Locale, Dict> = {
     'nav.faq': 'FAQ',
     'nav.contact': 'Contact',
     'nav.track': 'Suivi de commande',
+    'nav.sale': 'Promotions',
 
     'hero.cta': 'Acheter',
     'hero.seeProducts': 'Voir les produits',

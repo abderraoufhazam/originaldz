@@ -11,8 +11,10 @@ export default function SiteFooter({ locale }: { locale: Locale }) {
           <div className="text-sm font-semibold text-slate-700">originaldz</div>
           <nav className="flex flex-wrap items-center justify-center gap-4 text-sm text-slate-600">
             <Link href="/about" className="hover:text-brand-700">{t(dict, 'footer.about')}</Link>
+            <Link href="/returns" className="hover:text-brand-700">سياسة الاستبدال</Link>
             <Link href="/privacy" className="hover:text-brand-700">{t(dict, 'footer.privacy')}</Link>
             <Link href="/faq" className="hover:text-brand-700">{t(dict, 'footer.faq')}</Link>
+            <Link href="/contact" className="hover:text-brand-700">{t(dict, 'nav.contact')}</Link>
           </nav>
         </div>
         <p className="mt-4 text-center text-xs text-slate-400">
