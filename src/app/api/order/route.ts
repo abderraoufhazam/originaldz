@@ -179,13 +179,33 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'could not save order' }, { status: 500 });
   }
 
-  // Telegram notification (feature 9)
+  // Telegram notification (feature 9) — full order details
+  const riskLabel = risk === 'flagged' ? '🔴 عميل مشبوه' : risk === 'warning' ? '🟡 تنبيه' : '';
+  const deliveryInfo =
+    deliveryType === 'office'
+      ? `${officeName}`
+      : `${body.commune ?? ''}${body.address ? ' — ' + body.address : ''}`;
+  const sourceInfo = [body.utm_source, body.utm_campaign].filter(Boolean).join(' / ');
+
   await sendTelegram(
-    `🛒 <b>طلب جديد</b> #${orderNumber}\n` +
-      `👤 ${firstName} ${lastName}\n` +
-      `📞 ${phone}\n` +
-      `📦 ${orderRow.product_title} × ${quantity}\n` +
-      `💰 ${total} دج${risk !== 'none' ? `\n⚠️ ${risk === 'flagged' ? 'عميل مشبوه' : 'تنبيه'}` : ''}`,
+    `🛒 <b>طلب جديد</b> — #${orderNumber}\n` +
+      `📅 ${new Date().toLocaleString('ar-DZ', { dateStyle: 'short', timeStyle: 'short' })}\n\n` +
+      `<b>👤 الزبون</b>\n` +
+      `${firstName} ${lastName}\n` +
+      `📞 ${phone}\n\n` +
+      `<b>📦 المنتج</b>\n` +
+      `${orderRow.product_title}\n` +
+      `الكمية: ${quantity}\n` +
+      `سعر الوحدة: ${unitPrice} دج\n` +
+      (discountPercent ? `الخصم: −${discountPercent}%\n` : '') +
+      `تكلفة التوصيل: ${deliveryFee} دج\n` +
+      `<b>المجموع: ${total} دج</b>\n\n` +
+      `<b>📍 التوصيل</b>\n` +
+      `الولاية: ${wilayaName}\n` +
+      `${deliveryType === 'office' ? '🏢 استلام من المكتب' : '🏠 توصيل إلى المنزل'}\n` +
+      `${deliveryInfo}` +
+      (riskLabel ? `\n\n${riskLabel}` : '') +
+      (sourceInfo ? `\n📣 المصدر: ${sourceInfo}` : ''),
   );
 
   return NextResponse.json({ order_number: orderNumber, total });
