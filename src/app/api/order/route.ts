@@ -174,10 +174,11 @@ export async function POST(req: Request) {
     utm_content: body.utm_content ?? '',
   };
 
-  const { error } = await sb.from('orders').insert(orderRow);
-  if (error) {
+  const { data: inserted, error } = await sb.from('orders').insert(orderRow).select('id').single();
+  if (error || !inserted) {
     return NextResponse.json({ error: 'could not save order' }, { status: 500 });
   }
+  const orderId = (inserted as { id: string }).id;
 
   // Telegram notification (feature 9) — full order details
   const riskLabel = risk === 'flagged' ? '🔴 عميل مشبوه' : risk === 'warning' ? '🟡 تنبيه' : '';
@@ -206,6 +207,16 @@ export async function POST(req: Request) {
       `${deliveryInfo}` +
       (riskLabel ? `\n\n${riskLabel}` : '') +
       (sourceInfo ? `\n📣 المصدر: ${sourceInfo}` : ''),
+    [
+      [
+        { text: '✅ تأكيد', callback_data: `status:${orderId}:confirmed` },
+        { text: '🚚 شحن', callback_data: `status:${orderId}:shipped` },
+      ],
+      [
+        { text: '📦 تسليم', callback_data: `status:${orderId}:delivered` },
+        { text: '❌ إلغاء', callback_data: `status:${orderId}:cancelled` },
+      ],
+    ],
   );
 
   return NextResponse.json({ order_number: orderNumber, total });
