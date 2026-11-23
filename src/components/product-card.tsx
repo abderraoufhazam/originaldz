@@ -14,7 +14,7 @@ export default function ProductCard({ product, locale }: { product: Product; loc
   return (
     <Link
       href={`/products/${product.slug}`}
-      className="group flex flex-col overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-soft transition duration-300 hover:-translate-y-1 hover:shadow-lift"
+      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-brand-100 bg-white shadow-soft transition duration-300 hover:-translate-y-1 hover:shadow-lift"
     >
       <div className="relative aspect-square overflow-hidden bg-slate-100">
         <img
@@ -38,7 +38,7 @@ export default function ProductCard({ product, locale }: { product: Product; loc
             </span>
           )}
           {onSale ? (
-            <span className="rounded-full bg-amber-500 px-2.5 py-1 text-xs font-extrabold text-white">
+            <span className="rounded-full bg-copper-gradient px-2.5 py-1 text-xs font-extrabold text-white">
               −{Math.round((1 - product.price / product.compare_at_price!) * 100)}%
             </span>
           ) : null}
@@ -55,7 +55,7 @@ export default function ProductCard({ product, locale }: { product: Product; loc
             </span>
           ) : null}
         </div>
-        <span className="inline-flex w-fit items-center gap-1 rounded-full bg-brand-50 px-3 py-1 text-xs font-bold text-brand-700 transition group-hover:bg-brand-600 group-hover:text-white">
+        <span className="inline-flex w-fit items-center gap-1 rounded-full bg-brand-50 px-3 py-1 text-xs font-bold text-brand-700 transition group-hover:bg-copper-gradient group-hover:text-white">
           {t(dict, 'common.orderNow')} →
         </span>
       </div>

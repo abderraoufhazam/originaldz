@@ -28,9 +28,9 @@ export default async function SiteHeader({ locale }: { locale: Locale }) {
   return (
     <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/90 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4">
-        <Link href="/" className="flex items-center gap-2">
-          <img src="/logo.png" alt={storeName} className="h-9 w-auto object-contain" />
-          <span className="text-lg font-extrabold text-brand-800">{storeName}</span>
+        <Link href="/" className="flex items-center gap-2.5">
+          <img src="/monogram.svg" alt={storeName} className="h-10 w-10 rounded-xl shadow-jewel" />
+          <span className="font-display text-xl font-bold tracking-tight text-brand-800">{storeName}</span>
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex">
@@ -51,7 +51,7 @@ export default async function SiteHeader({ locale }: { locale: Locale }) {
               href={`https://wa.me/${whatsapp.replace(/\D/g, '')}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden rounded-full bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700 sm:block"
+              className="hidden rounded-full bg-copper-gradient px-4 py-2 text-sm font-bold text-white hover:brightness-110 sm:block"
             >
               WhatsApp
             </a>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="jewel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4a2b52"/>
+      <stop offset="1" stop-color="#221326"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#jewel)"/>
+  <path d="M32 12 50 32 32 52 14 32Z" fill="none" stroke="#e2936a" stroke-width="2.6"/>
+  <text x="32" y="39" text-anchor="middle" font-family="Arial, sans-serif" font-size="19" font-weight="bold" fill="#e2936a">DZ</text>
+</svg>
